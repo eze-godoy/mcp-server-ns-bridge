@@ -5,7 +5,7 @@ description = "MCP server for Netherlands NS trains - route planning and pricing
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    { name = "Eze Godoy" }
+    { name = "Eze Godoy", email = "contact@ezegodoy.com" }
 ]
 license = { text = "MIT" }
 dependencies = [
