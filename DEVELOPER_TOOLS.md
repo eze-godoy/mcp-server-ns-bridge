@@ -174,7 +174,7 @@ check_untyped_defs = true
 uv run mypy src/
 
 # Check specific file
-uv run mypy src/ns_trains_mcp/server.py
+uv run mypy src/ns_bridge/server.py
 
 # Show error codes
 uv run mypy --show-error-codes src/
@@ -247,7 +247,7 @@ uv run pytest -x
 **Example test**:
 ```python
 import pytest
-from ns_trains_mcp.models import Station
+from ns_bridge.models import Station
 
 def test_station_creation():
     station = Station(name="Utrecht Centraal", code="ut")
@@ -304,11 +304,11 @@ open htmlcov/index.html
 ---------- coverage: platform darwin, python 3.11.0 -----------
 Name                              Stmts   Miss  Cover
 -----------------------------------------------------
-src/ns_trains_mcp/__init__.py         2      0   100%
-src/ns_trains_mcp/config.py          15      2    87%
-src/ns_trains_mcp/models.py          45      0   100%
-src/ns_trains_mcp/ns_api_client.py   89     12    87%
-src/ns_trains_mcp/server.py         124     28    77%
+src/ns_bridge/__init__.py         2      0   100%
+src/ns_bridge/config.py          15      2    87%
+src/ns_bridge/models.py          45      0   100%
+src/ns_bridge/ns_api_client.py   89     12    87%
+src/ns_bridge/server.py         124     28    77%
 -----------------------------------------------------
 TOTAL                               275     42    85%
 ```

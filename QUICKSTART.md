@@ -23,7 +23,7 @@ brew install uv
 ### 2. Clone and navigate to the project
 
 ```bash
-cd mcp-server-ns-trains
+cd mcp-server-ns-bridge
 ```
 
 ### 3. Install dependencies
@@ -64,7 +64,7 @@ You should see: `11 passed`
 ### Option A: Test with MCP Inspector (Recommended for first-time)
 
 ```bash
-uv run mcp dev src/ns_trains_mcp/server.py
+uv run mcp dev src/ns_bridge/server.py
 ```
 
 This opens an interactive inspector where you can test the MCP tools.
@@ -72,7 +72,7 @@ This opens an interactive inspector where you can test the MCP tools.
 ### Option B: Install in Claude Desktop
 
 ```bash
-uv run mcp install src/ns_trains_mcp/server.py
+uv run mcp install src/ns_bridge/server.py
 ```
 
 This automatically configures Claude Desktop to use your server.
@@ -89,13 +89,13 @@ This automatically configures Claude Desktop to use your server.
 ```json
 {
   "mcpServers": {
-    "ns-trains": {
+    "ns-bridge": {
       "command": "uv",
       "args": [
         "--directory",
-        "/absolute/path/to/mcp-server-ns-trains",
+        "/absolute/path/to/mcp-server-ns-bridge",
         "run",
-        "src/ns_trains_mcp/server.py"
+        "src/ns_bridge/server.py"
       ],
       "env": {
         "NS_API_KEY": "your_api_key_here"
@@ -175,7 +175,7 @@ pytest         # ✗ Wrong
 
 ### Permission denied
 ```bash
-chmod +x src/ns_trains_mcp/server.py
+chmod +x src/ns_bridge/server.py
 ```
 
 ## Development Workflow

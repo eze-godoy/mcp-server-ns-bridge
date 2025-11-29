@@ -19,7 +19,7 @@ This project aims to be welcoming and inclusive. Please be respectful and profes
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd mcp-server-ns-trains
+   cd mcp-server-ns-bridge
    ```
 
 2. **Install dependencies**
@@ -187,7 +187,7 @@ class Station(BaseModel):
 
 ```python
 import pytest
-from ns_trains_mcp.models import Station
+from ns_bridge.models import Station
 
 def test_station_creation():
     """Test creating a station with required fields."""
@@ -307,7 +307,7 @@ Your PR will be reviewed for:
 Understanding the codebase structure:
 
 ```
-src/ns_trains_mcp/
+src/ns_bridge/
 ├── __init__.py          # Package metadata
 ├── config.py            # Settings management
 ├── models.py            # Pydantic data models
