@@ -456,7 +456,7 @@ cli = [
 ]
 
 [[package]]
-name = "mcp-server-ns-trains"
+name = "mcp-server-ns-bridge"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

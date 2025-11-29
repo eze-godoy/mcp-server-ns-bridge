@@ -42,7 +42,7 @@ Closes: FORGE-XXX
 
 <!-- Describe any manual testing performed -->
 
-- [ ] Tested with MCP Inspector (`uv run mcp dev src/ns_trains_mcp/server.py`)
+- [ ] Tested with MCP Inspector (`uv run mcp dev src/ns_bridge/server.py`)
 - [ ] Tested with Claude Desktop
 - [ ] Verified with real NS API (if applicable)
 

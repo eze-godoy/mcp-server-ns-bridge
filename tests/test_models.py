@@ -2,7 +2,7 @@
 
 from datetime import UTC, datetime
 
-from ns_trains_mcp.models import (
+from ns_bridge.models import (
     DiscountType,
     Location,
     Price,

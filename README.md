@@ -46,7 +46,7 @@ A Model Context Protocol (MCP) server that enables LLMs to interact with the Net
 
 ```bash
 # Clone the repository
-cd mcp-server-ns-trains
+cd mcp-server-ns-bridge
 
 # Install dependencies
 uv sync --all-extras
@@ -91,7 +91,7 @@ cp .env.example .env
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
-uv run mcp dev src/ns_trains_mcp/server.py
+uv run mcp dev src/ns_bridge/server.py
 ```
 
 This opens the MCP Inspector for interactive testing.
@@ -99,7 +99,7 @@ This opens the MCP Inspector for interactive testing.
 #### Installing in Claude Desktop
 
 ```bash
-uv run mcp install src/ns_trains_mcp/server.py
+uv run mcp install src/ns_bridge/server.py
 ```
 
 This will configure Claude Desktop to use your MCP server.
@@ -117,13 +117,13 @@ Add to your Claude Desktop config file (location varies by OS):
 ```json
 {
   "mcpServers": {
-    "ns-trains": {
+    "ns-bridge": {
       "command": "uv",
       "args": [
         "--directory",
-        "/absolute/path/to/mcp-server-ns-trains",
+        "/absolute/path/to/mcp-server-ns-bridge",
         "run",
-        "src/ns_trains_mcp/server.py"
+        "src/ns_bridge/server.py"
       ],
       "env": {
         "NS_API_KEY": "your_api_key_here"
@@ -148,9 +148,9 @@ Once configured, you can ask Claude (or other MCP-compatible LLMs):
 ### Project Structure
 
 ```
-mcp-server-ns-trains/
+mcp-server-ns-bridge/
 ├── src/
-│   └── ns_trains_mcp/
+│   └── ns_bridge/
 │       ├── __init__.py          # Package initialization
 │       ├── server.py            # MCP server implementation
 │       ├── ns_api_client.py     # NS API wrapper

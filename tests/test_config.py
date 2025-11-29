@@ -3,7 +3,7 @@
 import os
 from unittest.mock import patch
 
-from ns_trains_mcp.config import Settings
+from ns_bridge.config import Settings
 
 
 def test_settings_from_env() -> None:
