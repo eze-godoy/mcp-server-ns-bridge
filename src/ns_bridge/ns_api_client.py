@@ -6,8 +6,8 @@ from typing import Any
 
 import httpx
 
-from ns_trains_mcp.config import Settings
-from ns_trains_mcp.models import (
+from ns_bridge.config import Settings
+from ns_bridge.models import (
     DeparturesResponse,
     DiscountType,
     Station,

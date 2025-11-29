@@ -1,23 +1,21 @@
 """MCP Server for Netherlands NS Trains."""
 
-import asyncio
 import logging
 from datetime import datetime
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
-from mcp.server.stdio import stdio_server
 
-from ns_trains_mcp.config import get_settings
-from ns_trains_mcp.models import DiscountType, TravelClass
-from ns_trains_mcp.ns_api_client import NSAPIClient, NSAPIError
+from ns_bridge.config import get_settings
+from ns_bridge.models import DiscountType, TravelClass
+from ns_bridge.ns_api_client import NSAPIClient, NSAPIError
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize MCP server
-mcp = FastMCP("ns-trains")
+mcp = FastMCP("ns-bridge")
 
 # Global API client instance
 _api_client: NSAPIClient | None = None
@@ -459,16 +457,7 @@ async def get_station_resource(code: str) -> str:
 
 def main() -> None:
     """Run the MCP server."""
-
-    async def run() -> None:
-        async with stdio_server() as (read_stream, write_stream):
-            await mcp.run(
-                read_stream,
-                write_stream,
-                mcp.create_initialization_options(),
-            )
-
-    asyncio.run(run())
+    mcp.run()
 
 
 if __name__ == "__main__":
