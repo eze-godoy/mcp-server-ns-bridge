@@ -1,6 +1,7 @@
 """MCP Server for Netherlands NS Trains."""
 
 import logging
+import traceback
 from datetime import datetime
 from typing import Any
 
@@ -238,13 +239,13 @@ async def search_trips(
 
                 # Add planned and actual times/tracks for destination
                 if leg.destination.planned_date_time:
-                    leg_data["destination"][
-                        "planned_time"
-                    ] = leg.destination.planned_date_time.isoformat()
+                    leg_data["destination"]["planned_time"] = (
+                        leg.destination.planned_date_time.isoformat()
+                    )
                 if leg.destination.actual_date_time:
-                    leg_data["destination"][
-                        "actual_time"
-                    ] = leg.destination.actual_date_time.isoformat()
+                    leg_data["destination"]["actual_time"] = (
+                        leg.destination.actual_date_time.isoformat()
+                    )
                 if leg.destination.planned_track:
                     leg_data["destination"]["planned_track"] = leg.destination.planned_track
                 if leg.destination.actual_track:
@@ -314,7 +315,6 @@ async def search_trips(
     except Exception as e:
         logger.exception("Error searching trips")
         # Get the raw API response if available
-        import traceback
 
         return {
             "error": f"Unexpected error: {e!s}",
@@ -449,7 +449,7 @@ async def get_station_resource(code: str) -> str:
         if station.lat and station.lng:
             info += f"- **Location**: {station.lat}, {station.lng}\n"
 
-        return info  # noqa: TRY300
+        return info
 
     except Exception as e:
         return f"Error retrieving station information: {e!s}"

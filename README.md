@@ -2,9 +2,9 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Tests: pytest](https://img.shields.io/badge/tests-pytest-blue.svg)](https://github.com/pytest-dev/pytest)
 
 A Model Context Protocol (MCP) server that enables LLMs to interact with the Netherlands Railways (NS) API for route planning, pricing, and real-time departure information.
@@ -50,6 +50,9 @@ cd mcp-server-ns-bridge
 
 # Install dependencies
 uv sync --all-extras
+
+# Set up pre-commit hooks (recommended for development)
+uv run pre-commit install
 
 # Copy environment template
 cp .env.example .env
@@ -166,23 +169,41 @@ mcp-server-ns-bridge/
 
 This project uses modern Python development tools for code quality:
 
-#### Code Formatting & Linting
+#### Pre-commit Hooks
 
-- **Black**: Code formatter for consistent style
-- **Ruff**: Fast, modern linter and code checker
-- **MyPy**: Static type checker
+Pre-commit hooks automatically check your code before each commit:
 
-Run all checks:
+- **General checks**: Trailing whitespace, EOF fixes, YAML/TOML validation
+- **Ruff**: Fast linting and code formatting
+- **MyPy**: Static type checking
+- **Bandit**: Security vulnerability scanning
 
 ```bash
-# Format code
-uv run black src/ tests/
+# Install pre-commit hooks (one-time setup)
+uv run pre-commit install
+
+# Run manually on all files
+uv run pre-commit run --all-files
+
+# Hooks will automatically run on git commit
+```
+
+#### Code Formatting & Linting
+
+You can also run tools manually:
+
+```bash
+# Format code with Ruff
+uv run ruff format src/ tests/
 
 # Lint and auto-fix
 uv run ruff check --fix src/ tests/
 
 # Type checking
 uv run mypy src/
+
+# Security scanning
+uv run bandit -r src/
 ```
 
 See [DEVELOPER_TOOLS.md](DEVELOPER_TOOLS.md) for detailed documentation on each tool and why we use them.
@@ -260,10 +281,10 @@ Suggestions and improvements are welcome!
 1. Create a feature branch
 2. Make your changes
 3. Run the test suite: `uv run pytest`
-4. Run linting: `uv run ruff check --fix src/ tests/`
-5. Run type checking: `uv run mypy src/`
-6. Format code: `uv run black src/ tests/`
-7. Submit a pull request
+4. Pre-commit hooks will automatically run on commit (or run manually: `uv run pre-commit run`)
+5. Submit a pull request
+
+**Note**: Pre-commit hooks automatically handle formatting, linting, type checking, and security scanning.
 
 ## License
 

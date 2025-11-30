@@ -35,11 +35,11 @@ def test_station_creation() -> None:
 
 def test_station_minimal() -> None:
     """Test creating a Station with minimal fields."""
-    station = Station(namen=StationNames(lang="Amsterdam"))
+    station = Station(namen=StationNames(lang="Amsterdam"), UICCode="8400058")
 
     assert station.name == "Amsterdam"
     assert station.code is None
-    assert station.uic_code is None
+    assert station.uic_code == "8400058"
 
 
 def test_location_with_alias() -> None:
@@ -68,6 +68,9 @@ def test_stop_with_times() -> None:
         actualDateTime=later,
         plannedTrack="5b",
         actualTrack="5a",
+        countryCode="nl",
+        uicCode="8400530",
+        stationCode="rtd",
     )
 
     assert stop.name == "Rotterdam Centraal"
@@ -100,6 +103,7 @@ def test_price() -> None:
         priceInCents=1250,
         priceInCentsExcludingSupplement=1000,
         supplementInCents=250,
+        buyableTicketPriceInCents=1250,
         travelClass=TravelClass.SECOND,
         discountType=DiscountType.NO_DISCOUNT,
     )
