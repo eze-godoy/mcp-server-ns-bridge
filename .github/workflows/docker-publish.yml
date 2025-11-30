@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - forge-47-create-publish-docker-image
     tags:
       - 'v*'
   pull_request:
@@ -76,8 +75,20 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
+            # For PRs: pr-123
+            type=ref,event=pr
+            # For branches: branch-name
+            type=ref,event=branch
+            # For tags: 1.2.3, 1.2, 1
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+            # Always: sha-abc1234
             type=sha,format=short
+            # For main branch: latest
             type=raw,value=latest,enable={{is_default_branch}}
+          flavor: |
+            latest=false
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
