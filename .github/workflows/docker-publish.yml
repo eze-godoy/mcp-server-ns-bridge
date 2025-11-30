@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - forge-47-create-publish-docker-image
     tags:
       - 'v*'
   pull_request:
