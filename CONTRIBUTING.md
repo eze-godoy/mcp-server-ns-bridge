@@ -345,6 +345,123 @@ Always:
 - Check the package is maintained and secure
 - Update documentation if needed
 
+## Docker Development Workflow
+
+### Testing Docker Builds
+
+For development, prefer the native Python workflow with `uv` for faster iteration. Use Docker only when:
+- Testing the Docker build configuration
+- Verifying multi-platform compatibility
+- Reproducing production environment issues
+
+### Building and Testing Locally
+
+```bash
+# Build Docker image
+docker build -t mcp-server-ns-bridge:dev .
+
+# Test the Docker image
+docker run -i --rm \
+  -e NS_API_KEY=your_test_api_key \
+  mcp-server-ns-bridge:dev
+
+# Check image size
+docker images mcp-server-ns-bridge:dev
+
+# Build for multiple platforms (requires buildx)
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -t mcp-server-ns-bridge:multiplatform \
+  .
+```
+
+### Docker Build Optimization
+
+When modifying the Dockerfile:
+
+1. **Test build times**: Multi-stage builds should be fast
+2. **Check image size**: Target ~80-120MB for Alpine-based images
+3. **Verify layer caching**: Dependencies should cache properly
+4. **Test multi-platform**: Ensure both amd64 and arm64 work
+
+```bash
+# Build and time it
+time docker build -t mcp-server-ns-bridge:test .
+
+# Inspect layers
+docker history mcp-server-ns-bridge:test
+
+# Check for vulnerabilities (optional)
+docker scan mcp-server-ns-bridge:test
+```
+
+### Docker-Compose for Testing
+
+Use docker-compose for quick testing:
+
+```bash
+# Build and run with docker-compose
+docker-compose build
+docker-compose run --rm ns-bridge
+
+# Clean up
+docker-compose down
+```
+
+### Updating Docker Documentation
+
+When modifying Docker-related files, update:
+- `Dockerfile` - Build configuration
+- `docker-compose.yml` - Local testing setup
+- `DOCKER.md` - User-facing Docker documentation (advanced usage)
+- `README.docker.md` - Docker Hub README (synced automatically via GitHub Actions)
+- `.github/workflows/docker-publish.yml` - CI/CD pipeline
+- `README.md` - GitHub repository README (includes all installation options)
+
+**Important**: When adding new features or changing functionality:
+- Update both `README.md` (GitHub) and `README.docker.md` (Docker Hub)
+- `README.md` includes all installation methods (Docker, uv, pip)
+- `README.docker.md` is Docker-focused and automatically syncs to Docker Hub
+
+### CI/CD Docker Builds
+
+The project uses GitHub Actions for automated Docker builds:
+
+- **On PR**: Builds Docker image to verify it works (doesn't push)
+- **On push to main**: Builds and pushes to Docker Hub with `latest` tag
+- **On version tag**: Builds and pushes with semantic version tags (v1.0.0, v1.0, v1)
+
+To test CI/CD locally before pushing:
+
+```bash
+# Install act (GitHub Actions local runner)
+brew install act  # macOS
+# or follow: https://github.com/nektos/act
+
+# Run the docker-publish workflow locally
+act push -j build-and-push --secret DOCKERHUB_USERNAME=test --secret DOCKERHUB_TOKEN=test
+```
+
+### Debugging Docker Issues
+
+```bash
+# Access container shell
+docker run -it --rm \
+  --entrypoint /bin/sh \
+  mcp-server-ns-bridge:dev
+
+# Run with verbose logging
+docker run -i --rm \
+  -e NS_API_KEY=test \
+  -e ENVIRONMENT=development \
+  mcp-server-ns-bridge:dev
+
+# Check container processes
+docker run -it --rm \
+  --entrypoint /bin/sh \
+  mcp-server-ns-bridge:dev -c "ps aux"
+```
+
 ## Questions or Issues?
 
 - **Bug reports**: Open an issue with detailed reproduction steps
