@@ -27,7 +27,7 @@ dev = [
     # Code quality
     "ruff>=0.8.0",
     "mypy>=1.8.0",
-    "black>=24.0.0",
+    "pre-commit>=4.0.0",
 ]
 
 [build-system]
@@ -74,17 +74,15 @@ select = [
 ]
 ignore = [
     "E501",    # line too long (handled by formatter)
+    "ISC001",  # implicit string concatenation (conflicts with formatter)
     "PLR0913", # too many arguments
     "TRY003",  # avoid specifying long messages outside exception class
+    "TRY300",  # consider moving statement to else block (overly pedantic)
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["PLR2004", "S101", "ARG001"]
-
-# Black configuration - code formatter
-[tool.black]
-line-length = 100
-target-version = ["py311"]
+"src/ns_bridge/server.py" = ["PLR0912", "PLR0915"]  # Complex search_trips function
 
 # MyPy configuration - static type checker
 [tool.mypy]
@@ -100,7 +98,7 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 strict_equality = true
-strict_concatenate = true
+extra_checks = true
 
 [[tool.mypy.overrides]]
 module = "mcp.*"
@@ -145,3 +143,8 @@ exclude_lines = [
     "class .*\\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
 ]
+
+# Bandit configuration - security linting
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
+skips = ["B101"]  # Skip assert_used in tests

@@ -88,7 +88,8 @@ class NSAPIClient:
             )
             logger.info(f"Response status: {response.status_code}")
             response.raise_for_status()
-            return response.json()
+            result: dict[str, Any] = response.json()
+            return result
 
         except httpx.HTTPStatusError as e:
             error_msg = f"NS API request failed: {e.response.status_code} - {e.response.text}"
