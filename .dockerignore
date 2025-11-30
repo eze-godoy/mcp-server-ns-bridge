@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+
+# Documentation (not needed in image)
+docs/
+*.md
+# Keep README.md as it's required by pyproject.toml for package build
+!README.md
+
+# Configuration files
+.env
+.env.*
+!.env.example
+
+# Development tools
+.pre-commit-config.yaml
+.python-version
+.ruff_cache/
+
+# Project files
+tests/
+*.log
+*.sqlite
+*.db
