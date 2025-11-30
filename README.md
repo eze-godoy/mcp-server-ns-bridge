@@ -6,8 +6,11 @@
 [![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Tests: pytest](https://img.shields.io/badge/tests-pytest-blue.svg)](https://github.com/pytest-dev/pytest)
+[![Docker](https://img.shields.io/badge/docker-available-blue.svg)](https://hub.docker.com/r/ezegodoy26/mcp-server-ns-bridge)
 
-A Model Context Protocol (MCP) server that enables LLMs to interact with the Netherlands Railways (NS) API for route planning, pricing, and real-time departure information.
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that enables AI assistants to interact with the Netherlands Railways (NS) API for route planning, pricing, and real-time departure information.
+
+**Compatible with any MCP client**, including Claude Desktop, custom implementations, and AI agent frameworks.
 
 ## Features
 
@@ -38,11 +41,26 @@ A Model Context Protocol (MCP) server that enables LLMs to interact with the Net
 
 ### Prerequisites
 
-- Python 3.11 or higher
 - NS API key from [NS API Portal](https://apiportal.ns.nl/)
-- `uv` package manager (recommended) or `pip`
+- Choose one installation method:
+  - **Docker** (easiest - no Python installation needed)
+  - **uv** (recommended for development)
+  - **pip** (traditional Python workflow)
 
-### Setup with uv (Recommended)
+### Option 1: Docker (Easiest)
+
+**Prerequisites**: Docker Desktop or Docker Engine
+
+```bash
+# Pull the pre-built image from Docker Hub
+docker pull ezegodoy26/mcp-server-ns-bridge:latest
+```
+
+Then configure your MCP client (see [Usage](#usage) section below for configuration examples).
+
+For detailed Docker usage, troubleshooting, and advanced options, see [DOCKER.md](DOCKER.md).
+
+### Option 2: Setup with uv (Recommended for Development)
 
 ```bash
 # Clone the repository
@@ -61,7 +79,7 @@ cp .env.example .env
 # NS_API_KEY=your_actual_api_key_here
 ```
 
-### Setup with pip
+### Option 3: Setup with pip
 
 ```bash
 # Create virtual environment
@@ -99,15 +117,20 @@ uv run mcp dev src/ns_bridge/server.py
 
 This opens the MCP Inspector for interactive testing.
 
-#### Installing in Claude Desktop
+#### Configuring MCP Clients
 
+This server works with any MCP-compatible client. Below are configuration examples for popular clients.
+
+##### Claude Desktop
+
+**Automatic Installation:**
 ```bash
 uv run mcp install src/ns_bridge/server.py
 ```
 
-This will configure Claude Desktop to use your MCP server.
+This will automatically configure Claude Desktop to use your MCP server.
 
-#### Manual Configuration
+**Manual Configuration:**
 
 Add to your Claude Desktop config file (location varies by OS):
 
@@ -117,6 +140,32 @@ Add to your Claude Desktop config file (location varies by OS):
 
 **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
+**For Docker installation:**
+```json
+{
+  "mcpServers": {
+    "ns-bridge": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "--init",
+        "-e",
+        "NS_API_KEY",
+        "ezegodoy26/mcp-server-ns-bridge:latest"
+      ],
+      "env": {
+        "NS_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+> **Note**: The `-e NS_API_KEY` in the `args` array tells Docker to pass the environment variable from the host (set by the `env` section) into the container. Without this, the API key won't be available inside Docker.
+
+**For uv installation:**
 ```json
 {
   "mcpServers": {
@@ -136,9 +185,15 @@ Add to your Claude Desktop config file (location varies by OS):
 }
 ```
 
-### Example Queries for LLMs
+After updating the configuration, restart your MCP client to load the server.
 
-Once configured, you can ask Claude (or other MCP-compatible LLMs):
+##### Other MCP Clients
+
+For other MCP-compatible clients (custom implementations, AI agent frameworks, etc.), refer to your client's documentation for stdio server configuration. The server accepts standard MCP protocol messages via stdin/stdout.
+
+### Example Queries
+
+Once configured, you can ask your AI assistant:
 
 - "What trains are departing from Utrecht Centraal in the next hour?"
 - "Find me a train from Amsterdam to Rotterdam tomorrow at 9 AM"

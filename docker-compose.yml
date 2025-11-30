@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  ns-bridge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mcp-server-ns-bridge:local
+    stdin_open: true  # Required for stdio transport (equivalent to -i flag)
+    tty: false        # Not needed for MCP stdio
+    init: true        # Handle signals properly
+    environment:
+      - NS_API_KEY=${NS_API_KEY}
+      - NS_API_BASE_URL=${NS_API_BASE_URL:-https://gateway.apiportal.ns.nl}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    # No ports exposed - MCP uses stdio transport
+    # No volumes needed - stateless API service
+    restart: "no"  # MCP servers are started by Claude Desktop, not long-running
