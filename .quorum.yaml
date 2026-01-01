@@ -77,4 +77,4 @@ pricing:
   outputPer1M: 15.0
 
 output:
-  minSeverity: low
+  minSeverity: high
