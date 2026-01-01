@@ -1,6 +1,15 @@
 # CHANGELOG
 
 
+## v0.1.1 (2026-01-01)
+
+### Chores
+
+- Setup Quorum AI code review action
+  ([#7](https://github.com/eze-godoy/mcp-server-ns-bridge/pull/7),
+  [`afb39c2`](https://github.com/eze-godoy/mcp-server-ns-bridge/commit/afb39c23fc15fc56ad91d13ea3b6c61ffba66eb5))
+
+
 ## v0.1.0 (2025-11-30)
 
 ### Features
