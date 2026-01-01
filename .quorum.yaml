@@ -1,0 +1,80 @@
+version: 1
+
+review:
+  depth: standard
+  focus:
+    - security
+    - best-practices
+  instructions: |
+    This is an MCP (Model Context Protocol) server for Netherlands NS train API integration.
+    It provides tools for route planning and pricing via the NS public API.
+
+    Key review areas:
+    - Proper async/await usage with httpx (no blocking calls in async context)
+    - Pydantic model validation and type safety
+    - Error handling for external API calls (timeouts, retries, error responses)
+    - API key/credentials handling (must use environment variables, never hardcoded)
+    - MCP protocol compliance and tool definitions
+    - Input validation for user-provided data (station names, dates, etc.)
+
+ignore:
+  # Lock files and generated content
+  - '**/uv.lock'
+  - '**/poetry.lock'
+  - '**/package-lock.json'
+  # Documentation (focus on code)
+  - '**/*.md'
+  - '**/LICENSE'
+
+paths:
+  - pattern: 'src/ns_bridge/config.py'
+    depth: security
+    instructions: |
+      Critical security file. Check for:
+      - No hardcoded API keys or secrets
+      - Proper use of pydantic-settings for env var loading
+      - Secure defaults (e.g., timeouts, SSL verification)
+      - Validation of configuration values
+
+  - pattern: 'src/ns_bridge/server.py'
+    depth: deep
+    instructions: |
+      Main MCP server implementation. Check for:
+      - MCP tool definitions follow protocol spec
+      - Proper error handling and user-friendly error messages
+      - Input validation before passing to API client
+      - No sensitive data in tool responses
+
+  - pattern: 'src/ns_bridge/ns_api_client.py'
+    depth: deep
+    instructions: |
+      External API integration. Check for:
+      - Proper httpx async client usage
+      - Timeout configuration
+      - Error handling for API failures (4xx, 5xx, network errors)
+      - No credential leakage in logs or error messages
+      - Rate limiting awareness
+
+  - pattern: 'src/ns_bridge/models.py'
+    depth: standard
+    instructions: |
+      Pydantic models for API data. Check for:
+      - Proper type annotations
+      - Field validation where appropriate
+      - Optional vs required fields match API spec
+
+  - pattern: 'tests/**/*.py'
+    depth: quick
+    instructions: 'Verify tests cover error cases and edge conditions'
+
+model:
+  id: anthropic.claude-sonnet-4-20250514-v1:0
+  maxTokens: 4096
+  temperature: 0.3
+
+pricing:
+  inputPer1M: 3.0
+  outputPer1M: 15.0
+
+output:
+  minSeverity: low
